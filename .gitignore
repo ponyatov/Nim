@@ -97,3 +97,6 @@ htmldocs
 
 ## these are not needed anymore unless checkout old older versions
 nimdoc.out.css
+
+# GNU make build scripts
+!Makefile

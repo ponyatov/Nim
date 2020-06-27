@@ -6,6 +6,15 @@ This repository contains the Nim compiler, Nim's stdlib, tools and documentation
 For more information about Nim, including downloads and documentation for
 the latest release, check out [Nim's website][nim-site] or [bleeding edge docs](https://nim-lang.github.io/Nim/).
 
+***
+
+This `-cross` branch of the Nim translator contains special tunes for the
+generic `nim` version targets on making it *cross-compiler in the first*.
+
+see [cross.md] for more info
+
+***
+
 ## Community
 
 [![Join the IRC chat][badge-nim-irc]][nim-irc]
