@@ -12,7 +12,7 @@
 CWD     = $(CURDIR)
 
 # module name /lowercased/
-MODULE  = $(shell echo $(notdir $(CWD)) | tr A-Z a-z )
+MODULE  = $(shell echo $(notdir $(CWD)) | tr "[:upper:]" "[:lower:]" )
 
 # host OS on which we run GNU make (predefined in Windows as `Windows_NT`)
 OS     ?= $(shell uname -s)
@@ -46,15 +46,26 @@ TLD      = $(TARGET)-ld
 TSIZE    = $(TARGET)-size
 TOBJDUMP = $(TARGET)-objdump
 
+## choosenim installed Nim tools
+# NIMBLE  = $(HOME)/.nimble/bin/nimble
+# NIM     = $(HOME)/.nimble/bin/nim
+NPRETTY = $(HOME)/.nimble/bin/nimpretty
+
+## detect number of CPU cores
+CORES   = $(shell grep processor /proc/cpuinfo|wc -l)
+
 
 .PHONY: all
-all:
-	echo target:$(TARGET)
-	echo cwd:$(CWD)
-	echo module:$(MODULE)
-	echo os:$(OS)
-	$(CC) --version
-	$(TCC) --version
+all: build
+
+.PHONY: build
+build: bin/nim
+
+bin/nim: csources/makefile
+	cd csources ; CC=$(CC) CFLAGS="-march=native" $(MAKE) -j$(CORES)
+
+csources/makefile:
+	git clone -v --depth 1 https://github.com/nim-lang/csources.git
 
 
 
@@ -87,6 +98,9 @@ i686-w64-mingw32_Linux_install:
 	make i686-w64-mingw32_Linux_update
 i686-w64-mingw32_Linux_update:
 	sudo apt install -u `cat apt.mingw`
+
+# $(NIMBLE):
+# 	curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 
 
 
