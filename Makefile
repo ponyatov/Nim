@@ -92,9 +92,19 @@ i686-w64-mingw32_Linux_update:
 
 .PHONY: master shadow release
 
-MERGE  = Makefile *.md .gitignore apt.*
+MERGE  = Makefile readme.md cross.md .gitignore
+MERGE += apt.txt apt.mingw
 
 master:
 	git checkout $(USER)-cross
 	git pull -v
 	git checkout $(USER)-shadow -- $(MERGE)
+
+shadow:
+	git checkout $(USER)-shadow
+	git pull -v
+
+release:
+	git tag $(NOW)-$(REL)
+	git push -v && git push -v --tags
+	$(MAKE) shadow
